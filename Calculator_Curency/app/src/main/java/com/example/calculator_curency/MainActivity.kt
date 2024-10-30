@@ -30,7 +30,6 @@ class MainActivity : AppCompatActivity() {
 
 
         val change = mapOf("Viet Nam" to vietnam, "Korea" to korea, "US" to us, "Japan" to japan)
-        var selected = 1
         var type1 = ""
         var type2 = ""
 
@@ -137,7 +136,7 @@ class MainActivity : AppCompatActivity() {
                     if (p0 != null) {
                         if (p0.isNotEmpty()) {
                             var input2 = p0.toString().toFloat()
-                            var rate = change[type1]?.get(type2)?.toFloat()
+                            var rate = change[type2]?.get(type1)?.toFloat()
                             var num1 = input2 * rate!!
                             inputText1.setText("$num1")
                         }
