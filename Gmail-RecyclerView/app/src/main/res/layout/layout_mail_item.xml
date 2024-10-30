@@ -19,9 +19,10 @@
 
     <TextView
         android:id="@+id/text_sender"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:paddingLeft="10dp"
+        android:paddingRight="10dp"
         android:text="Sender Name"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/first_name_avt"
@@ -33,6 +34,7 @@
         android:layout_height="0dp"
         android:paddingLeft="10dp"
         android:text="Content"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/image_check"
         app:layout_constraintStart_toEndOf="@+id/first_name_avt"
@@ -42,10 +44,8 @@
         android:id="@+id/text_time"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="12:30 AM"
+        android:text="01/01/2024"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.963"
-        app:layout_constraintStart_toEndOf="@+id/text_sender"
         app:layout_constraintTop_toTopOf="parent" />
 
     <ImageView

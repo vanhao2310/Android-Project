@@ -12,6 +12,24 @@ import kotlin.random.Random
 
 class MailAdapter(val mails: List<MailItemModel>, val listener: ItemSelect? = null): RecyclerView.Adapter<MailAdapter.MailViewHolder>() {
 
+    class MailViewHolder(itemView: View, listener: ItemSelect?): RecyclerView.ViewHolder(itemView) {
+        val textAvt: TextView
+        val senderName: TextView
+        val content: TextView
+        val time: TextView
+        var imageCheck: ImageView
+        init {
+            textAvt = itemView.findViewById(R.id.first_name_avt)
+            senderName = itemView.findViewById(R.id.text_sender)
+            content = itemView.findViewById(R.id.text_content)
+            time = itemView.findViewById(R.id.text_time)
+            imageCheck = itemView.findViewById(R.id.image_check)
+            imageCheck.setOnClickListener({
+                listener?.CheckedMail(adapterPosition)
+            })
+        }
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MailViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_mail_item, parent, false)
         return MailViewHolder(itemView, listener)
@@ -25,45 +43,22 @@ class MailAdapter(val mails: List<MailItemModel>, val listener: ItemSelect? = nu
         holder.senderName.text = mail.name
         holder.content.text = mail.content
         holder.time.text = mail.time
+
         if (mail.isChecked) {
+            //neu duoc chon thi cho sao mau vang
             holder.imageCheck.setImageResource(R.drawable.baseline_star_24)
         } else {
             holder.imageCheck.setImageResource(R.drawable.baseline_star_border_24)
         }
-
+        //lay mau ngau nhien va set hinh tron
+        val colors = listOf(
+            Color.RED, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA
+        )
         val shapeDrawable = GradientDrawable().apply {
             shape = GradientDrawable.RECTANGLE
-            setColor(getRandomColor())
+            setColor(colors[mail.colorId])
             cornerRadius = 1000f  // Bán kính lớn để tạo hiệu ứng tròn
         }
         holder.textAvt.background = shapeDrawable
     }
-
-    private fun getRandomColor(): Int {
-        val colors = listOf(
-            Color.RED, Color.BLUE, Color.GREEN, Color.YELLOW, Color.CYAN, Color.MAGENTA
-        )
-        return colors[Random.nextInt(colors.size)]
-    }
-
-    class MailViewHolder(itemView: View, listener: ItemSelect?): RecyclerView.ViewHolder(itemView) {
-        val textAvt: TextView
-        val senderName: TextView
-        val content: TextView
-        val time: TextView
-        var imageCheck: ImageView
-        init {
-            textAvt = itemView.findViewById(R.id.first_name_avt)
-            senderName = itemView.findViewById(R.id.text_sender)
-            content = itemView.findViewById(R.id.text_content)
-            time = itemView.findViewById(R.id.text_time)
-            imageCheck = itemView.findViewById(R.id.image_check)
-
-            imageCheck.setOnClickListener({
-                listener?.CheckedMail(adapterPosition)
-            })
-        }
-    }
-
-
 }
