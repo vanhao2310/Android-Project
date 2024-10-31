@@ -2,6 +2,7 @@ package com.example.gmail
 
 import android.graphics.Color
 import android.graphics.drawable.GradientDrawable
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,6 +33,7 @@ class MailAdapter(val mails: List<MailItemModel>, val listener: ItemSelect? = nu
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MailViewHolder {
         val itemView = LayoutInflater.from(parent.context).inflate(R.layout.layout_mail_item, parent, false)
+        //Log.v("TAG", "create view holder")
         return MailViewHolder(itemView, listener)
     }
 
@@ -60,5 +62,7 @@ class MailAdapter(val mails: List<MailItemModel>, val listener: ItemSelect? = nu
             cornerRadius = 1000f  // Bán kính lớn để tạo hiệu ứng tròn
         }
         holder.textAvt.background = shapeDrawable
+
+        //Log.v("TAG", "bind view holder")
     }
 }
