@@ -66,16 +66,25 @@ class MainActivity : AppCompatActivity(), ItemClickListener {
     }
 
     override fun remove(position: Int, view: View) {
-        //Log.v("TAG", "remove ${students[position].name} - ${students[position].mssv}")
+        //Log.v("TAG", "remove ${students[position].name} - ${students[position].mssv}"
         val rm_student = students[position]
-        students.removeAt(position)
-        adapter.notifyItemRemoved(position)
-        Snackbar.make(view, "Remove ${rm_student.name} - ${rm_student.mssv}", Snackbar.LENGTH_LONG)
-            .setAction("UNDO", {
-                students.add(position, rm_student)
-                adapter.notifyItemInserted(position)
-            })
+        AlertDialog.Builder(this)
+            .setTitle("Delete Student")
+            .setMessage("Ban co muon xoa sinh vien: ${rm_student.name}-${rm_student.mssv}")
+            .setPositiveButton("Yes",
+                { _, _ ->
+                    students.removeAt(position)
+                    adapter.notifyItemRemoved(position)
+                    Snackbar.make(view, "Remove ${rm_student.name} - ${rm_student.mssv}", Snackbar.LENGTH_LONG)
+                        .setAction("UNDO", {
+                            students.add(position, rm_student)
+                            adapter.notifyItemInserted(position)
+                        })
+                        .show()
+                })
+            .setNegativeButton("No", null)
             .show()
+            .setCanceledOnTouchOutside(true)
     }
 
     override fun edit(position: Int) {
