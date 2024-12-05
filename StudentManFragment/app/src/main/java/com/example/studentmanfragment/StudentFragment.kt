@@ -24,7 +24,7 @@ class StudentFragment : Fragment() {
         val editMssv = view.findViewById<EditText>(R.id.edit_mssv)
 
         //lay data tu arguments
-        val pos = arguments?.getInt("pos", -1)
+        var pos = arguments?.getInt("pos", -1)
         val name = arguments?.getString("name")
         val mssv = arguments?.getString("mssv")
 
@@ -40,13 +40,18 @@ class StudentFragment : Fragment() {
                 val mssv = editMssv.text.toString()
                 //gui du lieu ve listFragment
                 val args = Bundle()
-                if (pos != null) {
-                    args.putInt("pos", pos)
-                } else {
-                    args.putInt("pos1", -1)
+                if (pos == null)
+                    pos = -1
+
+                if (activity is StudentAction) {
+                    if (pos == -1) {
+                        //them moi sinh vien
+                        (activity as StudentAction).saveStudent(0, StudentModel(name, mssv))
+                    } else {
+                        (activity as StudentAction).updateList(pos!!, StudentModel(name, mssv))
+                    }
                 }
-                args.putString("name", name)
-                args.putString("mssv", mssv)
+
                 findNavController().navigate(R.id.action_studentFragment_to_listFragment, args)
             }
         })

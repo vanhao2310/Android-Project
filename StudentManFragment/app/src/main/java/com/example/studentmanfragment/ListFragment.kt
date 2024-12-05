@@ -17,20 +17,9 @@ import com.google.android.material.snackbar.Snackbar
 
 class ListFragment : Fragment() {
 
-    var students = mutableListOf(
-        StudentModel("Vu Van Hao", "20215572"),
-        StudentModel("Quach Dinh Duong", "20210000"),
-        StudentModel("Nguyen Thanh Ha", "20210000"),
-        StudentModel("Do Thanh Dat", "20210000"),
-        StudentModel("Bui Viet Lang", "20210000"),
-        StudentModel("Nguyen Dinh Tung", "20210000"),
-        StudentModel("Tu Van An", "20210000"),
-        StudentModel("Nguyen Quang Thuan", "20210000"),
-        StudentModel("Ha Son Duong", "20210000"),
-        StudentModel("Ha Van Tang", "20210000")
-    )
+     lateinit var students: MutableList<StudentModel>
 
-    lateinit var studentAdapter: StudentAdapter
+     lateinit var studentAdapter: StudentAdapter
 
 
     override fun onCreateView(
@@ -40,6 +29,12 @@ class ListFragment : Fragment() {
         // Inflate the layout for this fragment
         val view = inflater.inflate(R.layout.fragment_list, container, false)
 
+
+        if (activity is StudentAction)
+            students = (activity as StudentAction).getList()
+        else
+            students = mutableListOf()
+
         studentAdapter = StudentAdapter(students)
 
         val listView = view.findViewById<ListView>(R.id.list_view_student)
@@ -47,36 +42,10 @@ class ListFragment : Fragment() {
 
         registerForContextMenu(listView)
 
-        //lay du lieu tu arguments
-        val pos = arguments?.getInt("pos")
-        val name = arguments?.getString("name")
-        val mssv = arguments?.getString("mssv")
-        if (pos == -1) {
-            //co the la them sinh vien moi
-            if (name != null) {
-                if (mssv != null) {
-                    if (name.isNotEmpty() && mssv.isNotEmpty()) {
-                        students.add(0, StudentModel(name, mssv))
-                        studentAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-
-        } else {
-            //thay doi sinh vien
-            if (name != null) {
-                if (mssv != null) {
-                    if (name.isNotEmpty() && mssv.isNotEmpty()) {
-                        students[pos!!].name = name
-                        students[pos].mssv = mssv
-                        studentAdapter.notifyDataSetChanged()
-                    }
-                }
-            }
-        }
-
         return view
     }
+
+
 
     override fun onCreateContextMenu(
         menu: ContextMenu,
@@ -108,11 +77,15 @@ class ListFragment : Fragment() {
                         .setPositiveButton("YES"){ dialogInterface: DialogInterface, i: Int ->
                             students.removeAt(pos)
                             studentAdapter.notifyDataSetChanged()
+                            (activity as StudentAction).updateList(pos, null)
                             view?.let { it1 ->
                                 Snackbar.make(it1.findViewById(R.id.list_view_student),"Student removed", Snackbar.LENGTH_LONG)
                                     .setAction("UNDO"){
                                         students.add(pos, deleteStd)
                                         studentAdapter.notifyDataSetChanged()
+                                        if (activity is StudentAction) {
+                                            (activity as StudentAction).saveStudent(pos, deleteStd)
+                                        }
                                     }
                                     .show()
                             }
